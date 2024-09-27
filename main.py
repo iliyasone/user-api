@@ -46,5 +46,20 @@ def vote_on_post(post_id: int, vote: schemas.VoteCreate, db: Session = Depends(d
 
     crud.vote_on_post(db, post_id=post_id, vote=vote, user_ip=user_ip)
     
-    # Recalculate the rating and return the updated post
+    return construct_post_response(post, db, user_ip)
+
+@app.delete("/posts/{post_id}/vote", response_model=schemas.PostResponse)
+def delete_vote(post_id: int, db: Session = Depends(database.get_db), user_ip: str = Depends(get_user_ip)):
+    post = crud.get_post(db, post_id=post_id)
+    if post is None:
+        raise HTTPException(status_code=404, detail="Post not found")
+    
+    if post.hide_rating:
+        raise HTTPException(status_code=400, detail="Voting is disabled for this post")
+    
+    deleted = crud.delete_vote_by_ip(db, post_id=post_id, user_ip=user_ip)
+    
+    if not deleted:
+        raise HTTPException(status_code=404, detail="Vote not found")
+    
     return construct_post_response(post, db, user_ip)

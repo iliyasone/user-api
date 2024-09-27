@@ -42,10 +42,20 @@ def test_vote_on_post(post_id):
     assert "rating" in json_response  # Expecting the updated rating
     print(f"POST /posts/{post_id}/vote passed")
 
+def test_delete_vote(post_id):
+    # Send a DELETE request to remove the vote
+    response = requests.delete(f"{BASE_URL}/posts/{post_id}/vote")
+    assert response.status_code == 200  # Expecting success
+
+    json_response = response.json()
+    assert "rating" in json_response  
+    assert not json_response['isVoted']
+    print(f"DELETE /posts/{post_id}/vote passed")
+
 if __name__ == "__main__":
-    # Run the tests in sequence
     test_get_posts()
     post_id = test_create_post()
     print(post_id)
     test_get_post(post_id)
     test_vote_on_post(post_id)
+    test_delete_vote(post_id)

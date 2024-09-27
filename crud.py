@@ -29,3 +29,11 @@ def vote_on_post(db: Session, post_id: int, vote: schemas.VoteCreate, user_ip: s
         db.add(new_vote)
     db.commit()
     return vote
+
+def delete_vote_by_ip(db: Session, post_id: int, user_ip: str):
+    vote = get_vote_by_ip(db, post_id=post_id, ip=user_ip)
+    if vote:
+        db.delete(vote)
+        db.commit()
+        return True
+    return False
