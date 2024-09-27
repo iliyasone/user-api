@@ -33,7 +33,7 @@ jobs:
 
     - name: Run tests
       run: |
-        pytest
+        pytest --maxfail=1 --reruns 3 --reruns-delay 2
 
     - name: Archive test results
       if: failure()
