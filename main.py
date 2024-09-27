@@ -3,6 +3,7 @@ from fastapi import FastAPI, Depends, HTTPException, Request
 from sqlalchemy.orm import Session
 import crud, models, schemas, database
 from utils import construct_post_response
+from fastapi.middleware.cors import CORSMiddleware
 
 def lifespan(app: FastAPI):
     print("Starting up...")
@@ -11,6 +12,14 @@ def lifespan(app: FastAPI):
     print("Shutting down...")
 
 app = FastAPI(lifespan=lifespan)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # This allows all origins
+    allow_credentials=True,
+    allow_methods=["*"],  # Allows all HTTP methods
+    allow_headers=["*"],  # Allows all headers
+)
 
 def get_user_ip(request: Request) -> str:
     ip = request.client.host
