@@ -17,7 +17,7 @@ def get_post(db: Session, post_id: int):
     return db.query(models.Post).filter(models.Post.id == post_id).first()
 
 def get_posts(db: Session, skip: int = 0, limit: int = 10):
-    return db.query(models.Post).offset(skip).limit(limit).all()
+    return db.query(models.Post).order_by(models.Post.id.desc()).offset(skip).limit(limit).all()
 
 def get_all_votes(db: Session, post_id: int):
     return db.query(models.Vote).filter(models.Vote.post_id == post_id).all()
