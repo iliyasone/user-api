@@ -40,6 +40,7 @@ def test_vote_on_post(post_id):
     assert response.status_code == 200
     json_response = response.json()
     assert "rating" in json_response  # Expecting the updated rating
+    assert json_response['vote'] == 1
 
 def test_delete_vote(post_id):
     # Upvote the post first
@@ -51,4 +52,4 @@ def test_delete_vote(post_id):
 
     json_response = response.json()
     assert "rating" in json_response  
-    assert not json_response['isVoted']
+    assert json_response['vote'] == 0
