@@ -19,7 +19,7 @@ def get_post(db: Session, post_id: int):
 def get_posts(db: Session, skip: int = 0, limit: int = 10):
     return db.query(models.Post).order_by(models.Post.id.desc()).offset(skip).limit(limit).all()
 
-def get_all_votes(db: Session, post_id: int):
+def get_all_votes(db: Session, post_id: int) -> list[models.Vote]:
     return db.query(models.Vote).filter(models.Vote.post_id == post_id).all()
 
 def get_vote_by_ip(db: Session, post_id: int, ip: str):
