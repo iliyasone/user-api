@@ -11,6 +11,7 @@ class Post(Base):
     label = Column(String, index=True)
     content = Column(Text, nullable=False)
     hide_rating = Column(Boolean, default=False)
+    published_time = Column(Integer, default=False)
 
 class Vote(Base):
     __tablename__ = "votes"

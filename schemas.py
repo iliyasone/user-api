@@ -15,4 +15,5 @@ class PostResponse(BaseModel):
     content: str
     hideRating: bool
     rating: int
-    isVoted: bool
+    published_time: int
+    vote: Literal[-1, 0, 1]

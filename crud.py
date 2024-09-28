@@ -1,8 +1,13 @@
 from sqlalchemy.orm import Session
 import models, schemas
+from time import time
 
 def create_post(db: Session, post: schemas.PostCreate):
-    db_post = models.Post(label=post.label, content=post.content, hide_rating=post.hideRating)
+    db_post = models.Post(
+        label=post.label, 
+        content=post.content, 
+        hide_rating=post.hideRating,
+        published_time=int(time()))
     db.add(db_post)
     db.commit()
     db.refresh(db_post)
