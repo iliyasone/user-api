@@ -1,4 +1,4 @@
-name: Run FastAPI Tests
+name: Run Linter And FastAPI Tests
 
 on:
   push:
@@ -16,19 +16,23 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Set up Python
-      uses: actions/setup-python@v4
+    - name: Set up uv
+      uses: astral-sh/setup-uv@v3
       with:
-        python-version: '3.12' 
-        
+        python-version: "3.12"
+
     - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r pip-requirements.txt
+      run: uv sync --group test --group lint
+
+    - name: Check formatting
+      run: uv run ruff format --check
+
+    - name: Run Ruff lint
+      run: uv run ruff check
 
     - name: Start FastAPI server
       run: |
-        uvicorn main:app --host 127.0.0.1 --port 8000 &
+        uv run uvicorn main:app --host 127.0.0.1 --port 8000 &
         for i in {1..10}; do
           if nc -z 127.0.0.1 8000; then
             break
@@ -39,14 +43,7 @@ jobs:
 
     - name: Run tests
       run: |
-        pytest
-
-    - name: Archive test results
-      if: failure()
-      uses: actions/upload-artifact@v4
-      with:
-        name: pytest-results
-        path: test-results.xml
+        uv run pytest
 
     - name: Stop FastAPI server
       run: |

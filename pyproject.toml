@@ -1,0 +1,28 @@
+[build-system]
+build-backend = "uv_build"
+requires = ["uv_build>=0.9.13,<0.10.0"]
+
+[tool.uv.build-backend]
+module-root = "src"
+namespace = true
+
+[project]
+dependencies = [
+  "fastapi[all]>=0.123.4",
+  "requests>=2.32.5",
+  "sqlalchemy>=2.0.44",
+  "uvicorn>=0.38.0",
+]
+description = "Backend For the sum24-front-end Innopolis University Course"
+name = "user-api"
+readme = "README.md"
+requires-python = "==3.12.*"
+version = "0.1.0"
+
+[dependency-groups]
+lint = [
+  "ruff>=0.14.7",
+]
+test = [
+  "pytest>=9.0.1",
+]
