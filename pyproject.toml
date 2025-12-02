@@ -17,7 +17,7 @@ description = "Backend For the sum24-front-end Innopolis University Course"
 name = "user-api"
 readme = "README.md"
 requires-python = "==3.12.*"
-version = "0.1.0"
+version = "0.1.1"
 
 [dependency-groups]
 lint = [
